@@ -6,23 +6,22 @@
 library(tidyverse)
 library(lubridate)
 library(h2o)
-source("C:/Users/fxtrams/Documents/000_TradingRepo/R_markettype/TEST1/evaluate_market_type.R")
-source("C:/Users/fxtrams/Documents/000_TradingRepo/R_markettype/to_m.R")
+source("D:/TradingRepos/R_markettype/TEST1/evaluate_market_type.R")
+source("D:/TradingRepos/R_markettype/to_m.R")
 
 # Defining variables to be re-used in the code
-sbx <- "C:/Program Files (x86)/FxPro - Terminal2/MQL4/Files"
-sbx_masterT1 <- "C:/Program Files (x86)/FxPro - Terminal1/MQL4/Files"
-sbx_slaveT3 <- "C:/Program Files (x86)/FxPro - Terminal3/MQL4/Files"
-sbx_slaveT4 <- "C:/Program Files (x86)/FxPro - Terminal4/MQL4/Files"
-sbx_slaveT5 <- "C:/Program Files (x86)/FxPro - Terminal5/MQL4/Files"
+sbx <- "D:/FxPro - Terminal2/MQL4/Files"
+sbx_masterT1 <- "D:/FxPro - Terminal1/MQL4/Files"
+sbx_slaveT3 <- "D:/FxPro - Terminal3/MQL4/Files"
+
 chart_period <- 15 #this variable will define market type period
 num_cols <- 64
 
 #absolute path to store model objects (useful when scheduling tasks)
-path_model <- "C:/Users/fxtrams/Documents/000_TradingRepo/R_markettype/models"
+path_model <- "D:/TradingRepos/R_markettype/models"
 
-data_update_path <- "C:/Users/fxtrams/Documents/000_TradingRepo/R_markettype/TEST1/data_update"
-data_initial_path <- "C:/Users/fxtrams/Documents/000_TradingRepo/R_markettype/TEST1/data_initial"
+data_update_path <- "D:/TradingRepos/R_markettype/TEST1/data_update"
+data_initial_path <- "D:/TradingRepos/R_markettype/TEST1/data_initial"
 
 # Vector of currency pairs
 Pairs = c("EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCAD", "USDCHF", "USDJPY",
@@ -44,7 +43,7 @@ macd_100 <- macd %>% select(c(X2:X29)) %>% head(64)
 names(macd_100) <- Pairs
 
 # initialize the virtual machine
-h2o.init()
+h2o.init(nthreads = 1)
 
 # test for all columns
 for (PAIR in Pairs) {
@@ -55,8 +54,8 @@ for (PAIR in Pairs) {
   df <- macd_100 %>% select(PAIR)
   # Use function to score the data to the model
   my_market_prediction <- evaluate_market_type(x = df,
-                                    #model_path = "C:/Users/fxtrams/Documents/000_TradingRepo/R_markettype/models/regression.bin/DL_Regression",
-                                    model_path = "C:/Users/fxtrams/Documents/000_TradingRepo/R_markettype/models/classification.bin/DL_Classification",
+                                    #model_path = "D:/TradingRepos/R_markettype/models/regression.bin/DL_Regression",
+                                    model_path = "D:/TradingRepos/R_markettype/models/classification.bin/DL_Classification",
                                     num_cols = 64) 
   # predicted value to write
   my_market <- my_market_prediction  %>% select(predict)
@@ -85,8 +84,7 @@ for (PAIR in Pairs) {
   #write_csv(my_market, file.path(sbx, paste0("AI_MarketType_", PAIR, chart_period, ".csv")))
   write_csv(my_market, file.path(sbx_masterT1, paste0("AI_MarketType_", PAIR, chart_period, ".csv")))
   write_csv(my_market, file.path(sbx_slaveT3,  paste0("AI_MarketType_", PAIR, chart_period, ".csv")))
-  write_csv(my_market, file.path(sbx_slaveT4,  paste0("AI_MarketType_", PAIR, chart_period, ".csv")))
-  write_csv(my_market, file.path(sbx_slaveT5,  paste0("AI_MarketType_", PAIR, chart_period, ".csv")))
+
 }
 
 # retrieve already recorded data >> add temporary dataframe >> write to the data_update folder
