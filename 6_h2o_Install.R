@@ -11,11 +11,11 @@ for (pkg in pkgs) {
 }
 
 # Now we download, install and initialize the H2O package for R.
-install.packages("h2o", type="source", repos="http://h2o-release.s3.amazonaws.com/h2o/rel-wolpert/4/R")
+install.packages("h2o", type="source", repos="http://h2o-release.s3.amazonaws.com/h2o/rel-wright/8/R")
 
 # Finally, let's load H2O and start up an H2O cluster
 library(h2o)
-h2o.init(nthreads = 2)
+h2o.init(nthreads = 1)
 
 # Shutdown
 h2o.shutdown(prompt = FALSE)
