@@ -37,6 +37,7 @@ file.remove(file.path(data_update_path, "macd_ai_classified.rds"))
 
 # restore label column as factor
 macd_ML2 <- macd_ai_classified %>% mutate_at("M_T", as.factor)
+#macd_ML2 <- macd_ML2 %>% mutate_at("M_T", as.factor)
 #### ============================================================================
 
 # Market Periods
@@ -74,8 +75,8 @@ ModelC <- h2o.deeplearning(
   epochs = 200)
 
 #ModelC
-summary(ModelC)
-h2o.performance(ModelC)
+#summary(ModelC)
+#h2o.performance(ModelC)
 
 # to return predicted classes
 predicted <- h2o.predict(ModelC, macd_ML)  %>% as.data.frame()

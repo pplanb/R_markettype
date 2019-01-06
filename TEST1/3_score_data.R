@@ -10,7 +10,7 @@ source("D:/TradingRepos/R_markettype/TEST1/evaluate_market_type.R")
 source("D:/TradingRepos/R_markettype/to_m.R")
 
 # Defining variables to be re-used in the code
-sbx <- "D:/FxPro - Terminal2/MQL4/Files"
+sbx <- "D:/FxPro - Terminal3/MQL4/Files"
 sbx_masterT1 <- "D:/FxPro - Terminal1/MQL4/Files"
 sbx_slaveT3 <- "D:/FxPro - Terminal3/MQL4/Files"
 
